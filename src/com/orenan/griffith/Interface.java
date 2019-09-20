@@ -17,7 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
-
+import java.sql.*;
 
 
 public class Interface {
@@ -33,6 +33,8 @@ public class Interface {
 	private JPanel panel1;
 	private JPanel panel2;
 	private JPanel hostPanel2;
+	
+
 
 	/**
 	 * Launch the application.
@@ -41,11 +43,17 @@ public class Interface {
 	//Creating cardlayout variable assigned to the layout for multiple pages.
 	CardLayout cardlayout;
 	
-	//Creating variables for the registration.
+	//Creating textfields for the registration.
 	private JTextField txtNationality;
 	private JTextField txtName;
 	private JTextField txtAddress;
 	private JTextField txtMobileNumber;
+	
+	//Variables to register input.
+	String name;
+	String address;
+	int mobileNumber;
+	String nationality;
 	
 	//Starting the program making the interface visible.
 	public static void main(String[] args) {
@@ -207,6 +215,18 @@ public class Interface {
 		
 		//Button to complete registration.
 		JButton btnRegisterPage = new JButton("REGISTER");
+		btnRegisterPage.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				name = txtName.getText();
+				address = txtAddress.getText();
+				mobileNumber = Integer.parseInt(txtMobileNumber.getText());
+				nationality = txtNationality.getText();
+				
+				connection.Register(name, address, mobileNumber, nationality);
+				
+				System.out.println(name + " " + address + " " + mobileNumber + " " + nationality);
+			}
+		});
 		btnRegisterPage.setForeground(new Color(178, 34, 34));
 		btnRegisterPage.setBackground(new Color(220, 20, 60));
 		btnRegisterPage.setFont(new Font("Arial Black", Font.PLAIN, 13));

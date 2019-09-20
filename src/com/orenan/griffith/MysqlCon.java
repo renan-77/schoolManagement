@@ -2,6 +2,9 @@ package com.orenan.griffith;
 import java.sql.*;
 
 import javax.security.auth.callback.TextOutputCallback;
+import javax.swing.JOptionPane;
+import java.awt.EventQueue;
+
 public class MysqlCon {
 	
 	static String textOutput = "bla";
@@ -34,6 +37,22 @@ public class MysqlCon {
 	}
 	
 	public static void Register(String name, String address, int mobileNumber, String nationality) {
-		
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://51.75.248.73:3306/storm","rmt_admin","V!HpE9zK");
+			Statement myStmt = con.createStatement();					
+			
+			String sql = String.format("insert into student" 
+					+" (name, address, mobile_number, nationality)"
+					+" values ('%s','%s' ,'%d', '%s')", name, address, mobileNumber, nationality);
+			
+			myStmt.executeUpdate(sql);
+			
+			JOptionPane.showMessageDialog(null, "New user registred!");
+			
+		}catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
