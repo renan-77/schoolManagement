@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
@@ -18,7 +20,9 @@ import java.awt.SystemColor;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.sql.*;
-
+import javax.swing.JPasswordField;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class Interface {
 	
@@ -29,9 +33,9 @@ public class Interface {
 	private JFrame frame;
 	private JTextField txtInput;
 	private JTextField txtOutput;
-	private JPanel prmPanel;
+	JPanel prmPanel;
 	private JPanel panel1;
-	private JPanel panel2;
+	private JPanel panel3;
 	private JPanel hostPanel2;
 	
 
@@ -54,6 +58,9 @@ public class Interface {
 	String address;
 	int mobileNumber;
 	String nationality;
+	private JTextField txtUsername;
+	private JPasswordField passwordField;
+	private JPanel panel2;
 	
 	//Starting the program making the interface visible.
 	public static void main(String[] args) {
@@ -90,26 +97,88 @@ public class Interface {
 		
 		//Drawing parent cardlayout.
 		prmPanel = new JPanel();
+		prmPanel.setBorder(null);
 		prmPanel.setBounds(150, 6, 581, 321);
 		frame.getContentPane().add(prmPanel);
 		prmPanel.setLayout(new CardLayout(0, 0));
 		
 		//Drawing child cardlayout.
+		panel3 = new JPanel();
+		panel3.setBorder(null);
+		panel3.setBackground(Color.ORANGE);
+		prmPanel.add(panel3, "panel3");
+		panel3.setLayout(new CardLayout(0, 0));
+		
+		//Panel that holds the interface contents.
+		JPanel hostPanel3 = new JPanel();
+		panel3.add(hostPanel3, "name_32974287854379");
+		hostPanel3.setBorder(null);
+		hostPanel3.setBackground(new Color(165, 42, 42));
+		hostPanel3.setLayout(null);
+		
+		//Simple label to the login screen
+		JLabel lblLoginDb = new JLabel("LOGIN - DB ACCESS");
+		lblLoginDb.setBounds(149, 35, 286, 40);
+		hostPanel3.add(lblLoginDb);
+		lblLoginDb.setForeground(new Color(255, 255, 255));
+		lblLoginDb.setFont(new Font("Arial Black", Font.PLAIN, 26));
+		
+		//Box for the username input.
+		txtUsername = new JTextField();
+		txtUsername.setForeground(new Color(192, 192, 192));
+		txtUsername.setText("USERNAME");
+		txtUsername.setBounds(149, 107, 286, 34);
+		hostPanel3.add(txtUsername);
+		txtUsername.setColumns(10);
+		
+		//Button that calls the login function from mysqlcon class.
+		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Creating the char array from getPassword() as a String.
+				String password = new String(passwordField.getPassword());
+				
+				//If the boolean returned from MysqlCon is true, goes to the search page.
+				if(connection.Login(txtUsername.getText(), password) == true) {
+					cardlayout.show(prmPanel, "panel2");
+				
+				//Else if the boolean is false it prints out an error.
+				}else {
+					System.out.println("Error!!");
+				}
+			}
+		});
+		btnLogin.setForeground(new Color(165, 42, 42));
+		btnLogin.setFont(new Font("Arial", Font.PLAIN, 20));
+		btnLogin.setBounds(231, 188, 113, 59);
+		hostPanel3.add(btnLogin);
+		
+		//Creating the password box to the login.
+		passwordField = new JPasswordField();
+		passwordField.setText("PASSWORD");
+		passwordField.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				passwordField.setText("");
+			}
+		});
+		passwordField.setToolTipText("");
+		passwordField.setBounds(149, 142, 286, 34);
+		hostPanel3.add(passwordField);
+		
+		//Drawing child cardlayout.
 		panel2 = new JPanel();
 		panel2.setBorder(null);
-		panel2.setBackground(Color.ORANGE);
+		panel2.setBackground(new Color(0, 255, 255));
 		prmPanel.add(panel2, "panel2");
 		panel2.setLayout(new CardLayout(0, 0));
 		
 		//Panel that holds the interface contents.
 		hostPanel2 = new JPanel();
+		panel2.add(hostPanel2, "name_32533492514058");
 		hostPanel2.setBorder(null);
 		hostPanel2.setBackground(new Color(165, 42, 42));
-		panel2.add(hostPanel2, "name_118508506387210");
 		hostPanel2.setLayout(null);
-		
-		//Requires the layout of the main panel (parent).
-		cardlayout = (CardLayout)(prmPanel.getLayout());
 		
 		//Label for the program.
 		JLabel lblDatabaseLookup = new JLabel("DATABASE LOOKUP");
@@ -163,6 +232,9 @@ public class Interface {
 		});
 		btnRegister.setFont(new Font("Arial Black", Font.PLAIN, 11));
 		
+		//Requires the layout of the main panel (parent).
+		cardlayout = (CardLayout)(prmPanel.getLayout());
+		
 		//Drawing child cardlayout.
 		panel1 = new JPanel();
 		panel1.setBorder(null);
@@ -188,6 +260,12 @@ public class Interface {
 		
 		//Text field to input.
 		txtName = new JTextField();
+		txtName.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtName.setText("");
+			}
+		});
 		txtName.setBackground(new Color(224, 255, 255));
 		txtName.setForeground(new Color(192, 192, 192));
 		txtName.setText("NAME");
