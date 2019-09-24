@@ -7,6 +7,9 @@ import java.awt.EventQueue;
 
 public class MysqlCon {
 	
+	private static String url = "jdbc:mysql://51.75.248.73:3306/storm";
+	private static String usr = "rmt_admin";
+	private static String pass = "V!HpE9zK";
 	static String textOutput = "Blank";
 	boolean usrPassMatches = false;
 
@@ -23,7 +26,7 @@ public class MysqlCon {
 			//Driver connecting to the db using usr and pass.
 			Class.forName("com.mysql.jdbc.Driver");  
 			Connection con=DriverManager.getConnection(  
-			"jdbc:mysql://51.75.248.73:3306/storm","rmt_admin","V!HpE9zK");  
+			url,usr,pass);  
 
 			//Creating statement and a result set for it.
 			Statement stmt=con.createStatement();  
@@ -46,7 +49,7 @@ public class MysqlCon {
 		try {
 			//Calling the driver, Connecting to the database and creating the statement.
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://51.75.248.73:3306/storm","rmt_admin","V!HpE9zK");
+			Connection con = DriverManager.getConnection(url,usr,pass);
 			Statement myStmt = con.createStatement();					
 			
 			//Passing the command to the database to add the student based on the input.
@@ -81,8 +84,11 @@ public class MysqlCon {
 		
 		//Doing the functions to connect and passing the strings to it.
 		try {
+			//Calling the driver.
 			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://51.75.248.73/storm","rmt_admin", "V!HpE9zK");
+			
+			//Evoking the variable's methods.
+			con = DriverManager.getConnection(url,usr, pass);
 			pst = con.prepareStatement(sql);
 			pst.setString(1, username);
 			pst.setString(2, password);
