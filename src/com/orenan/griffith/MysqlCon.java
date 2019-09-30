@@ -22,6 +22,18 @@ public class MysqlCon {
 	
 	//Function that connects to the db and looks for students based on their id.
 	public static String giveData(String id) {
+		//Setting the output as invalid if the user id input is more than the existent ones. 
+		textOutput = "The specified id does not exist.";
+		
+		/*
+		 * Creating a int to parse the input,
+		 * then checking to see if the input is equals 
+		 * or less than zero, if it is, will turn the input as invalid. 
+		 * */
+		int parsedInput = Integer.parseInt(id);
+		if(parsedInput == 0 || parsedInput < 0) {
+			textOutput = "Sorry, the user id has to be greater than 0";
+		}
 		try{  
 			//Driver connecting to the db using usr and pass.
 			Class.forName("com.mysql.jdbc.Driver");  
@@ -32,9 +44,12 @@ public class MysqlCon {
 			Statement stmt=con.createStatement();  
 			ResultSet rs=stmt.executeQuery("select * from student WHERE student.id = " + id);  
 			
+			/*
+			 * If The id that is input is greater than the ones in the database it wont change textOutput.
+			 * */
 			//keep returning the result for the user until there's no next().
 			while(rs.next())
-				textOutput = "  " + rs.getString(2) + " " + rs.getString(3) + " " + rs.getString(4) + " " + rs.getString(5);  
+				textOutput = " Name: " + rs.getString(2) + "\n" + " Address: " + rs.getString(3) + "\n" + " Phone: " + rs.getString(4) + "\n" + " Nationality: " + rs.getString(5);  
 				System.out.println(textOutput);
 				con.close();
 			}catch(Exception e){ 

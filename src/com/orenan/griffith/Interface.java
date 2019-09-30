@@ -22,6 +22,7 @@ import java.sql.*;
 import javax.swing.JPasswordField;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import javax.swing.JTextArea;
 
 public class Interface {
 	
@@ -31,7 +32,6 @@ public class Interface {
 	String searchContent = "None";
 	private JFrame frame;
 	private JTextField txtInput;
-	private JTextField txtOutput;
 	JPanel prmPanel;
 	private JPanel panel1;
 	private JPanel panel3;
@@ -60,6 +60,7 @@ public class Interface {
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
 	private JPanel panel2;
+	private JTextArea txtOutput;
 	
 	//Starting the program making the interface visible.
 	public static void main(String[] args) {
@@ -195,15 +196,11 @@ public class Interface {
 		txtInput.setBackground(new Color(224, 255, 255));
 		txtInput.setColumns(10);
 		
-		//Textbox for the output based on the user input.
-		txtOutput = new JTextField();
-		txtOutput.setBounds(107, 143, 290, 68);
-		hostPanel2.add(txtOutput);
-		txtOutput.setFont(new Font("Myanmar MN", Font.PLAIN, 13));
+		//JTextArea to fix the student information as output.
+		txtOutput = new JTextArea();
 		txtOutput.setBackground(new Color(224, 255, 255));
-		txtOutput.setHorizontalAlignment(SwingConstants.LEFT);
-		txtOutput.setEditable(false);
-		txtOutput.setColumns(10);
+		txtOutput.setBounds(109, 139, 285, 73);
+		hostPanel2.add(txtOutput);
 		
 		//Button search with the function of acquiring the data on the database based on the user input and show it in the output textbox. 
 		JButton btnSearch = new JButton("SEARCH");
