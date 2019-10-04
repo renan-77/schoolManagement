@@ -7,23 +7,47 @@ import java.awt.EventQueue;
 
 public class MysqlCon {
 	
-	private static String url = "jdbc:mysql://51.75.248.73:3306/storm";
-	private static String usr = "rmt_admin";
-	private static String pass = "V!HpE9zK";
+	//Connection details for database (JDBC).
+	private static String url = "jdbc:mysql://serverip:port/databasename";
+	private static String usr = "login";
+	private static String pass = "password";
+	
 	static String textOutput = "Blank";
 	boolean usrPassMatches = false;
 
 	public static void main(String[] args) {
-		
-		//giveData();
-		
 		  
+	}
+	
+	public static String showLastId(String lastId) {
+		try{  
+			//Driver connecting to the db using usr and pass.
+			Class.forName("com.mysql.jdbc.Driver");  
+			Connection con=DriverManager.getConnection(  
+			url,usr,pass);  
+
+			//Creating statement and a result set for it.
+			Statement stmt=con.createStatement();  
+			ResultSet rs=stmt.executeQuery("SELECT id FROM `student` ORDER BY ID DESC LIMIT 1");  
+			
+			/*
+			 * If The id that is input is greater than the ones in the database it wont change textOutput.
+			 * */
+			//keep returning the result for the user until there's no next().
+			while(rs.next())
+				lastId = rs.getString(1);  
+				System.out.println(lastId);
+				con.close();
+			}catch(Exception e){ 
+				System.out.println(e);
+			}
+		return lastId;
 	}
 	
 	//Function that connects to the db and looks for students based on their id.
 	public static String giveData(String id) {
 		//Setting the output as invalid if the user id input is more than the existent ones. 
-		textOutput = "The specified id does not exist.";
+		textOutput = "The specified id does not exist, the last student registered id was " + showLastId("") + ".";
 		
 		/*
 		 * Creating a int to parse the input,
@@ -49,7 +73,7 @@ public class MysqlCon {
 			 * */
 			//keep returning the result for the user until there's no next().
 			while(rs.next())
-				textOutput = " Name: " + rs.getString(2) + "\n" + " Address: " + rs.getString(3) + "\n" + " Phone: " + rs.getString(4) + "\n" + " Nationality: " + rs.getString(5);  
+				textOutput = "Name: " + rs.getString(2) + "\n" + "Address: " + rs.getString(3) + "\n" + "Phone: " + rs.getString(4) + "\n" + "Nationality: " + rs.getString(5);  
 				System.out.println(textOutput);
 				con.close();
 			}catch(Exception e){ 

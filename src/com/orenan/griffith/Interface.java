@@ -7,15 +7,20 @@ import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.security.auth.callback.TextInputCallback;
 import javax.swing.JButton;
 import javax.swing.JTextPane;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.CardLayout;
 import java.awt.FlowLayout;
 import java.sql.*;
@@ -23,6 +28,8 @@ import javax.swing.JPasswordField;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import java.awt.Window.Type;
 
 public class Interface {
 	
@@ -61,6 +68,7 @@ public class Interface {
 	private JPasswordField passwordField;
 	private JPanel panel2;
 	private JTextArea txtOutput;
+	private JScrollPane scrollPane;
 	
 	//Starting the program making the interface visible.
 	public static void main(String[] args) {
@@ -91,14 +99,19 @@ public class Interface {
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(165, 42, 42));
 		frame.getContentPane().setEnabled(false);
-		frame.getContentPane().setLayout(null);
 		frame.setBounds(100, 100, 822, 364);
+		frame.setSize(600, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		//Getting the bounds of the main frame to center the content accordingly with it's size.
+		Rectangle sizeOfFrame = frame.getBounds();
 		
 		//Drawing parent cardlayout.
 		prmPanel = new JPanel();
 		prmPanel.setBorder(null);
-		prmPanel.setBounds(150, 6, 581, 321);
+		prmPanel.setBounds(0,0 ,600,300);
+		prmPanel.setSize(600, 300);
+		prmPanel.setLocation((sizeOfFrame.width / 2) - 300, (sizeOfFrame.height / 2) - 150);
 		frame.getContentPane().add(prmPanel);
 		prmPanel.setLayout(new CardLayout(0, 0));
 		
@@ -196,11 +209,16 @@ public class Interface {
 		txtInput.setBackground(new Color(224, 255, 255));
 		txtInput.setColumns(10);
 		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(109, 139, 285, 73);
+		hostPanel2.add(scrollPane);
+		
 		//JTextArea to fix the student information as output.
 		txtOutput = new JTextArea();
+		scrollPane.setViewportView(txtOutput);
+		txtOutput.setWrapStyleWord(true);
+		txtOutput.setLineWrap(true);
 		txtOutput.setBackground(new Color(224, 255, 255));
-		txtOutput.setBounds(109, 139, 285, 73);
-		hostPanel2.add(txtOutput);
 		
 		//Button search with the function of acquiring the data on the database based on the user input and show it in the output textbox. 
 		JButton btnSearch = new JButton("SEARCH");
@@ -247,10 +265,16 @@ public class Interface {
 		
 		//Text field to input.
 		txtNationality = new JTextField();
+		txtNationality.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtNationality.setText("");
+			}
+		});
 		txtNationality.setBackground(new Color(224, 255, 255));
 		txtNationality.setForeground(new Color(192, 192, 192));
 		txtNationality.setText("NATIONALITY");
-		txtNationality.setBounds(58, 186, 439, 32);
+		txtNationality.setBounds(74, 159, 439, 32);
 		hostPanel1.add(txtNationality);
 		txtNationality.setColumns(10);
 		
@@ -266,25 +290,37 @@ public class Interface {
 		txtName.setForeground(new Color(192, 192, 192));
 		txtName.setText("NAME");
 		txtName.setColumns(10);
-		txtName.setBounds(58, 81, 439, 32);
+		txtName.setBounds(74, 54, 439, 32);
 		hostPanel1.add(txtName);
 		
 		//Text field to input.
 		txtAddress = new JTextField();
+		txtAddress.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtAddress.setText("");
+			}
+		});
 		txtAddress.setBackground(new Color(224, 255, 255));
 		txtAddress.setForeground(new Color(192, 192, 192));
 		txtAddress.setText("ADDRESS");
 		txtAddress.setColumns(10);
-		txtAddress.setBounds(58, 116, 439, 32);
+		txtAddress.setBounds(74, 89, 439, 32);
 		hostPanel1.add(txtAddress);
 		
 		//Text field to input.
 		txtMobileNumber = new JTextField();
+		txtMobileNumber.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				txtMobileNumber.setText("");
+			}
+		});
 		txtMobileNumber.setBackground(new Color(224, 255, 255));
 		txtMobileNumber.setForeground(new Color(192, 192, 192));
 		txtMobileNumber.setText("MOBILE NUMBER");
 		txtMobileNumber.setColumns(10);
-		txtMobileNumber.setBounds(58, 150, 439, 32);
+		txtMobileNumber.setBounds(74, 123, 439, 32);
 		hostPanel1.add(txtMobileNumber);
 		
 		//Button to complete registration.
@@ -304,7 +340,7 @@ public class Interface {
 		btnRegisterPage.setForeground(new Color(178, 34, 34));
 		btnRegisterPage.setBackground(new Color(220, 20, 60));
 		btnRegisterPage.setFont(new Font("Arial Black", Font.PLAIN, 13));
-		btnRegisterPage.setBounds(291, 226, 133, 67);
+		btnRegisterPage.setBounds(307, 199, 133, 67);
 		hostPanel1.add(btnRegisterPage);
 		
 		//Button to go back to the search page.
@@ -317,12 +353,12 @@ public class Interface {
 		btnBack.setForeground(new Color(178, 34, 34));
 		btnBack.setFont(new Font("Arial Black", Font.PLAIN, 13));
 		btnBack.setBackground(new Color(220, 20, 60));
-		btnBack.setBounds(158, 226, 133, 67);
+		btnBack.setBounds(174, 199, 133, 67);
 		hostPanel1.add(btnBack);
 		
 		//Label to the registration layer.
 		JLabel lblRegistration = new JLabel("REGISTRATION");
-		lblRegistration.setBounds(158, 33, 246, 46);
+		lblRegistration.setBounds(174, 6, 246, 46);
 		hostPanel1.add(lblRegistration);
 		lblRegistration.setForeground(new Color(255, 255, 255));
 		lblRegistration.setHorizontalAlignment(SwingConstants.CENTER);
