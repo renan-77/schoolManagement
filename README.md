@@ -17,3 +17,7 @@ to the server where it is with it's login and password.
 This software was developed as my second program with an interface, the interface was developed
 with the SWING library. The purpose of the software was to practice and improve my interface and 
 database connection/scripts. 
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
